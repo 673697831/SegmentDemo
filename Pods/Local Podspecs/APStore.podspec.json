@@ -1,0 +1,34 @@
+{
+  "name": "APStore",
+  "version": "0.1.0",
+  "summary": "I am a store.",
+  "description": "APStore is a local store, include APKeyValueStore etc.\nAPKeyValueStore is base on fmdb.",
+  "homepage": "https://github.com/673697831/APStore",
+  "license": "MIT",
+  "authors": {
+    "ozr": "673697831@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/673697831/APStore.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "public_header_files": "Classes/APStore.h",
+  "source_files": "Classes/APStore.h",
+  "requires_arc": true,
+  "subspecs": [
+    {
+      "name": "APKeyValueStore",
+      "source_files": "Classes/APKeyValueStore/*.{h,m}",
+      "frameworks": "Foundation",
+      "libraries": "sqlite3",
+      "dependencies": {
+        "FMDB/SQLCipher": [
+          "~> 2.6.2"
+        ]
+      }
+    }
+  ]
+}
