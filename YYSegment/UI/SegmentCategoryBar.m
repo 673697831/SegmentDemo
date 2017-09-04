@@ -524,16 +524,22 @@ static const CGFloat LineViewWidth                  =   25.0;
     }
     
 - (void)scrollToIndex:(NSInteger)index
-    {
-        if(self.selectedIndex != index) {
-            [self setSelectedButtonSelected:NO];
-            self.selectedIndex = index;
-            [self setSelectedButtonSelected:YES];
-            
-            [self updateLineFrameDependOnSelectedIndex];
-        }
+{
+    if(self.selectedIndex != index) {
+        [self selectToIndex:index];
+        [self updateLineFrameDependOnSelectedIndex];
     }
-    
+}
+
+- (void)selectToIndex:(NSInteger)index
+{
+    if(self.selectedIndex != index) {
+        [self setSelectedButtonSelected:NO];
+        self.selectedIndex = index;
+        [self setSelectedButtonSelected:YES];
+    }
+}
+
 #pragma mark - Getter
     
 - (UIColor *)selectedColor

@@ -45,6 +45,7 @@
 - (void)showIndicator:(BOOL)showIndicator atIndex:(NSInteger)index;
 - (BOOL)isShowIndicateorAtIndex:(NSInteger)index;
 - (void)scrollToIndex:(NSInteger)index;
+- (void)selectToIndex:(NSInteger)index;
 - (void)setLineOffsetWithPage:(NSInteger)page ratio:(CGFloat)ratio;
 
 - (void)showBadge:(NSString *)badge atIndex:(NSInteger)index;

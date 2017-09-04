@@ -348,7 +348,7 @@ static const CGFloat kCategoryBarHeight = 40;
     self.isTriggerScrollFromCategoryBar = YES;
 //    [self triggerScrollToIndex:index];
     self.selectedIndex = index;
-    [self.contentScrollView setContentOffset:CGPointMake(index * self.bounds.size.width, 0) animated:YES];
+    [self.contentScrollView setContentOffset:CGPointMake(index * self.bounds.size.width, 0) animated:NOgit ad];
     
     
 }
@@ -359,7 +359,9 @@ static const CGFloat kCategoryBarHeight = 40;
 {
     self.isTriggerScrollFromCategoryBar = NO;
     if (scrollView == self.contentScrollView) {
-        [self scrollViewContentOffsetChangeWithOffsetX:targetContentOffset -> x];
+//        [self scrollViewContentOffsetChangeWithOffsetX:targetContentOffset -> x];
+//        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
+//        [self.segmentCategoryBar scrollToIndex:index];
     }
 }
 
@@ -367,9 +369,9 @@ static const CGFloat kCategoryBarHeight = 40;
 {
     self.isTriggerScrollFromCategoryBar = NO;
     if (scrollView == self.contentScrollView) {
-        [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];
-        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-        [self.segmentCategoryBar scrollToIndex:index];
+//        [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];
+//        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
+//        [self.segmentCategoryBar scrollToIndex:index];
     }
 }
 
@@ -382,6 +384,8 @@ static const CGFloat kCategoryBarHeight = 40;
     [[self segmentTitleArray] count] : scrollToPage;
     
     if (!self.isTriggerScrollFromCategoryBar) {
+        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
+        [self.segmentCategoryBar selectToIndex:index];
         [self.segmentCategoryBar setLineOffsetWithPage:scrollToPage ratio:radio];
     }
     
