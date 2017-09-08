@@ -348,9 +348,8 @@ static const CGFloat kCategoryBarHeight = 40;
     self.isTriggerScrollFromCategoryBar = YES;
 //    [self triggerScrollToIndex:index];
     self.selectedIndex = index;
-    [self.contentScrollView setContentOffset:CGPointMake(index * self.bounds.size.width, 0) animated:NOgit ad];
-    
-    
+    [self.contentScrollView setContentOffset:CGPointMake(index * self.bounds.size.width, 0) animated:NO];
+    [self.segmentCategoryBar scrollToIndex:index];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -369,10 +368,15 @@ static const CGFloat kCategoryBarHeight = 40;
 {
     self.isTriggerScrollFromCategoryBar = NO;
     if (scrollView == self.contentScrollView) {
-//        [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];
-//        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-//        [self.segmentCategoryBar scrollToIndex:index];
+        [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];
+        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
+        [self.segmentCategoryBar scrollToIndex:index];
     }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -385,8 +389,11 @@ static const CGFloat kCategoryBarHeight = 40;
     
     if (!self.isTriggerScrollFromCategoryBar) {
         NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-        [self.segmentCategoryBar selectToIndex:index];
+//        [self.segmentCategoryBar selectToIndex:index];
         [self.segmentCategoryBar setLineOffsetWithPage:scrollToPage ratio:radio];
+        [self.segmentCategoryBar changeButtonFontWithOffset:scrollView.contentOffset.x];
+        NSLog(@"scrollViewDidScroll %f", radio);
+//        [self.segmentCategoryBar scrollToIndex:index];
     }
     
     [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];

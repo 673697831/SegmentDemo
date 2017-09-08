@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.viewControllers = @[[YYSegmentMessageViewController new], [YYSegmentFriendsViewController new], [YYSegmentGroupViewController new]];
+    self.viewControllers = @[[YYSegmentMessageViewController new], [YYSegmentFriendsViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new], [YYSegmentGroupViewController new]];
     
     [self.view addSubview:self.categoryView];
     [self.categoryView mas_makeConstraints:^(MASConstraintMaker *make) {

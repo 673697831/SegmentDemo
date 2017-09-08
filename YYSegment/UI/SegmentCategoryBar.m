@@ -34,13 +34,7 @@ static const CGFloat LineViewWidth                  =   25.0;
     @end
 
 @implementation TestScrollView
-    
-- (void)setContentOffset:(CGPoint)contentOffset{
-    [super setContentOffset:contentOffset];
-    NSLog(@"%@",NSStringFromCGPoint(contentOffset));
-}
-    
-    @end
+@end
 
 @implementation SegmentCategoryBar
     
@@ -295,6 +289,16 @@ static const CGFloat LineViewWidth                  =   25.0;
     }
     [self updateSubview];
 }
+
+- (void)resetButtonStatus
+{
+    for (int i = 0; i < self.buttonArray.count; i ++) {
+        UIButton *button = self.buttonArray[i];
+        button.selected = NO;
+        [button setTitleColor:ButtonNormalColor forState:UIControlStateNormal];
+        [button setTitleColor:DefaultSelectedColor forState:UIControlStateSelected];
+    }
+}
     
 - (void)setSelectedButtonSelected:(BOOL)selected
     {
@@ -489,10 +493,18 @@ static const CGFloat LineViewWidth                  =   25.0;
         }
         
         self.lineView.frame = [self lineFrameWithLineX:x lineWidth:width];
+        
+        NSLog(@"setLineOffsetWithPage %f, %f, %f", self.scrollView.contentOffset.x, self.lineView.frame.origin.x, self.frame.size.width);
+        
+        CGRect rc = self.lineView.frame;
+        rc = CGRectMake(CGRectGetMinX(rc) - self.categoryTitlePadding, CGRectGetMinY(rc),
+                        CGRectGetWidth(rc) + 2 * self.categoryTitlePadding, CGRectGetHeight(rc));
+        [self.scrollView scrollRectToVisible:rc animated:NO];
     }
-    
+
 - (void)updateLineFrameDependOnSelectedIndex
     {
+        //[self.layer removeAllAnimations];
         CGRect lineRC  = [self viewWithTag:(self.selectedIndex + ButtonStartTag)].frame;
         [UIView animateWithDuration:0.2 animations:^{
             self.lineView.frame = [self lineFrameWithButtonIndex:self.selectedIndex];
@@ -521,8 +533,38 @@ static const CGFloat LineViewWidth                  =   25.0;
                 [self.scrollView scrollRectToVisible:rc animated:YES];
             }
         }];
+
+
     }
-    
+
+- (void)updateScrollViewcontentOffsetXWithPage:(NSInteger)page
+{
+    CGRect lineRC  = [self viewWithTag:(page + ButtonStartTag)].frame;
+    if((lineRC.origin.x - self.scrollView.contentOffset.x) > (CGRectGetWidth(self.bounds) * 2 / 3)) {
+        NSInteger index = page;
+        if (page + 2 < self.buttonArray.count) {
+            index = page + 2;
+        } else if (page + 1 < self.buttonArray.count) {
+            index = page + 1;
+        }
+        CGRect rc = [self viewWithTag:index + ButtonStartTag].frame;
+        rc = CGRectMake(CGRectGetMinX(rc) - self.categoryTitlePadding, CGRectGetMinY(rc),
+                        CGRectGetWidth(rc) + 2 * self.categoryTitlePadding, CGRectGetHeight(rc));
+        [self.scrollView scrollRectToVisible:rc animated:YES];
+    } else if(lineRC.origin.x - self.scrollView.contentOffset.x < CGRectGetWidth(self.bounds) / 3) {
+        NSInteger index = page;
+        if ((page - 2) >= 0) {
+            index = page - 2;
+        } else if (page - 1 >= 0) {
+            index = page - 1;
+        }
+        CGRect rc = [self viewWithTag:index + ButtonStartTag].frame;
+        rc = CGRectMake(CGRectGetMinX(rc) - self.categoryTitlePadding, CGRectGetMinY(rc),
+                        CGRectGetWidth(rc) + 2 * self.categoryTitlePadding, CGRectGetHeight(rc));
+        [self.scrollView scrollRectToVisible:rc animated:YES];
+    }
+}
+
 - (void)scrollToIndex:(NSInteger)index
 {
     if(self.selectedIndex != index) {
@@ -531,9 +573,47 @@ static const CGFloat LineViewWidth                  =   25.0;
     }
 }
 
+- (void)changeButtonFontWithOffset:(CGFloat)offset
+{
+    [self resetButtonStatus];
+    CGFloat width = self.bounds.size.width;
+    CGFloat p = fmod(offset, width) /width;
+    NSInteger index = offset / width;
+    UIButton *firstButton = self.buttonArray[index];
+    UIButton *secondButton = nil;
+    if (index + 1 < self.buttonArray.count) {
+        secondButton = self.buttonArray[index + 1];
+    }
+    
+    
+    //normal
+    CGFloat red1 = ButtonNormalColor.red;
+    CGFloat green1 = ButtonNormalColor.green;
+    CGFloat blue1 = ButtonNormalColor.blue;
+    
+    //selected
+    CGFloat red2 = DefaultSelectedColor.red;
+    CGFloat green2 = DefaultSelectedColor.green;
+    CGFloat blue2 = DefaultSelectedColor.blue;
+    
+    CGFloat redTemp1 = ((red2 - red1) * (1-p)) + red1;
+    CGFloat greenTemp1 = ((green2 - green1) * (1 - p)) + green1;
+    CGFloat blueTemp1 = ((blue2 - blue1) * (1 - p)) + blue1;
+    
+    CGFloat redTemp2 = ((red2 - red1) * p) + red1;
+    CGFloat greenTemp2 = ((green2 - green1) * p) + green1;
+    CGFloat blueTemp2 = ((blue2 - blue1) * p) + blue1;
+    
+    [firstButton setTitleColor:[UIColor colorWithRed:redTemp1 green:greenTemp1 blue:blueTemp1 alpha:1] forState:UIControlStateNormal];
+    [secondButton setTitleColor:[UIColor colorWithRed:redTemp2 green:greenTemp2 blue:blueTemp2 alpha:1] forState:UIControlStateNormal];
+    [firstButton setTitleColor:[UIColor colorWithRed:redTemp1 green:greenTemp1 blue:blueTemp1 alpha:1] forState:UIControlStateSelected];
+    [secondButton setTitleColor:[UIColor colorWithRed:redTemp2 green:greenTemp2 blue:blueTemp2 alpha:1] forState:UIControlStateSelected];
+}
+
 - (void)selectToIndex:(NSInteger)index
 {
     if(self.selectedIndex != index) {
+        [self resetButtonStatus];
         [self setSelectedButtonSelected:NO];
         self.selectedIndex = index;
         [self setSelectedButtonSelected:YES];
