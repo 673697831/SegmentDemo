@@ -1,5 +1,5 @@
 //
-//  DWSegmentCategoryViewController.h
+//  YYSegmentCategoryViewController.h
 //  YYSegment
 //
 //  Created by ouzhirui on 2017/7/29.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DWSegmentCategoryViewController : UIViewController
+@interface YYSegmentCategoryViewController : UIViewController
 
 @property (nonatomic, strong) NSArray *viewControllers;
 

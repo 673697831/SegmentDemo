@@ -13,13 +13,9 @@
 		8C573A571F2C392800BAC364 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C573A551F2C392800BAC364 /* Main.storyboard */; };
 		8C573A591F2C392800BAC364 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C573A581F2C392800BAC364 /* Assets.xcassets */; };
 		8C573A5C1F2C392800BAC364 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C573A5A1F2C392800BAC364 /* LaunchScreen.storyboard */; };
-		8C573AC01F2C761C00BAC364 /* CategoryTitleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB31F2C761C00BAC364 /* CategoryTitleButton.m */; };
-		8C573AC11F2C761C00BAC364 /* DWSegmentCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB51F2C761C00BAC364 /* DWSegmentCategoryViewController.m */; };
-		8C573AC21F2C761C00BAC364 /* SegmentCategoryBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB71F2C761C00BAC364 /* SegmentCategoryBar.m */; };
-		8C573AC31F2C761C00BAC364 /* SegmentCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB91F2C761C00BAC364 /* SegmentCategoryCell.m */; };
-		8C573AC51F2C761C00BAC364 /* UIView+Indicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573ABD1F2C761C00BAC364 /* UIView+Indicator.m */; };
-		8C573AC61F2C761C00BAC364 /* YYBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573ABF1F2C761C00BAC364 /* YYBadgeView.m */; };
-		8C573AC91F2C768600BAC364 /* SegmentCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AC81F2C768600BAC364 /* SegmentCategoryView.m */; };
+		8C573AC11F2C761C00BAC364 /* YYSegmentCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB51F2C761C00BAC364 /* YYSegmentCategoryViewController.m */; };
+		8C573AC21F2C761C00BAC364 /* YYSegmentCategoryBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AB71F2C761C00BAC364 /* YYSegmentCategoryBar.m */; };
+		8C573AC91F2C768600BAC364 /* YYSegmentCategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AC81F2C768600BAC364 /* YYSegmentCategoryView.m */; };
 		8C573ACD1F2C7ED300BAC364 /* YYSegmentBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573ACC1F2C7ED300BAC364 /* YYSegmentBaseViewController.m */; };
 		8C573AD01F2C7FFE00BAC364 /* YYSegmentMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573ACF1F2C7FFE00BAC364 /* YYSegmentMessageViewController.m */; };
 		8C573AD31F2C803800BAC364 /* YYSegmentFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C573AD21F2C803800BAC364 /* YYSegmentFriendsViewController.m */; };
@@ -41,20 +37,12 @@
 		8C573A5B1F2C392800BAC364 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C573A5D1F2C392800BAC364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C573A631F2C39FA00BAC364 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		8C573AB21F2C761C00BAC364 /* CategoryTitleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryTitleButton.h; sourceTree = "<group>"; };
-		8C573AB31F2C761C00BAC364 /* CategoryTitleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryTitleButton.m; sourceTree = "<group>"; };
-		8C573AB41F2C761C00BAC364 /* DWSegmentCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWSegmentCategoryViewController.h; sourceTree = "<group>"; };
-		8C573AB51F2C761C00BAC364 /* DWSegmentCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSegmentCategoryViewController.m; sourceTree = "<group>"; };
-		8C573AB61F2C761C00BAC364 /* SegmentCategoryBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCategoryBar.h; sourceTree = "<group>"; };
-		8C573AB71F2C761C00BAC364 /* SegmentCategoryBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCategoryBar.m; sourceTree = "<group>"; };
-		8C573AB81F2C761C00BAC364 /* SegmentCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCategoryCell.h; sourceTree = "<group>"; };
-		8C573AB91F2C761C00BAC364 /* SegmentCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCategoryCell.m; sourceTree = "<group>"; };
-		8C573ABC1F2C761C00BAC364 /* UIView+Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Indicator.h"; sourceTree = "<group>"; };
-		8C573ABD1F2C761C00BAC364 /* UIView+Indicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Indicator.m"; sourceTree = "<group>"; };
-		8C573ABE1F2C761C00BAC364 /* YYBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYBadgeView.h; sourceTree = "<group>"; };
-		8C573ABF1F2C761C00BAC364 /* YYBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYBadgeView.m; sourceTree = "<group>"; };
-		8C573AC71F2C768600BAC364 /* SegmentCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCategoryView.h; sourceTree = "<group>"; };
-		8C573AC81F2C768600BAC364 /* SegmentCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCategoryView.m; sourceTree = "<group>"; };
+		8C573AB41F2C761C00BAC364 /* YYSegmentCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSegmentCategoryViewController.h; sourceTree = "<group>"; };
+		8C573AB51F2C761C00BAC364 /* YYSegmentCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSegmentCategoryViewController.m; sourceTree = "<group>"; };
+		8C573AB61F2C761C00BAC364 /* YYSegmentCategoryBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSegmentCategoryBar.h; sourceTree = "<group>"; };
+		8C573AB71F2C761C00BAC364 /* YYSegmentCategoryBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSegmentCategoryBar.m; sourceTree = "<group>"; };
+		8C573AC71F2C768600BAC364 /* YYSegmentCategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSegmentCategoryView.h; sourceTree = "<group>"; };
+		8C573AC81F2C768600BAC364 /* YYSegmentCategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSegmentCategoryView.m; sourceTree = "<group>"; };
 		8C573ACB1F2C7ED300BAC364 /* YYSegmentBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSegmentBaseViewController.h; sourceTree = "<group>"; };
 		8C573ACC1F2C7ED300BAC364 /* YYSegmentBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSegmentBaseViewController.m; sourceTree = "<group>"; };
 		8C573ACE1F2C7FFE00BAC364 /* YYSegmentMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSegmentMessageViewController.h; sourceTree = "<group>"; };
@@ -143,20 +131,12 @@
 		8C573AB11F2C761C00BAC364 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8C573AB21F2C761C00BAC364 /* CategoryTitleButton.h */,
-				8C573AB31F2C761C00BAC364 /* CategoryTitleButton.m */,
-				8C573AB41F2C761C00BAC364 /* DWSegmentCategoryViewController.h */,
-				8C573AB51F2C761C00BAC364 /* DWSegmentCategoryViewController.m */,
-				8C573AB61F2C761C00BAC364 /* SegmentCategoryBar.h */,
-				8C573AB71F2C761C00BAC364 /* SegmentCategoryBar.m */,
-				8C573AB81F2C761C00BAC364 /* SegmentCategoryCell.h */,
-				8C573AB91F2C761C00BAC364 /* SegmentCategoryCell.m */,
-				8C573ABC1F2C761C00BAC364 /* UIView+Indicator.h */,
-				8C573ABD1F2C761C00BAC364 /* UIView+Indicator.m */,
-				8C573ABE1F2C761C00BAC364 /* YYBadgeView.h */,
-				8C573ABF1F2C761C00BAC364 /* YYBadgeView.m */,
-				8C573AC71F2C768600BAC364 /* SegmentCategoryView.h */,
-				8C573AC81F2C768600BAC364 /* SegmentCategoryView.m */,
+				8C573AB41F2C761C00BAC364 /* YYSegmentCategoryViewController.h */,
+				8C573AB51F2C761C00BAC364 /* YYSegmentCategoryViewController.m */,
+				8C573AB61F2C761C00BAC364 /* YYSegmentCategoryBar.h */,
+				8C573AB71F2C761C00BAC364 /* YYSegmentCategoryBar.m */,
+				8C573AC71F2C768600BAC364 /* YYSegmentCategoryView.h */,
+				8C573AC81F2C768600BAC364 /* YYSegmentCategoryView.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -298,20 +278,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C573AC91F2C768600BAC364 /* SegmentCategoryView.m in Sources */,
-				8C573AC11F2C761C00BAC364 /* DWSegmentCategoryViewController.m in Sources */,
-				8C573AC01F2C761C00BAC364 /* CategoryTitleButton.m in Sources */,
+				8C573AC91F2C768600BAC364 /* YYSegmentCategoryView.m in Sources */,
+				8C573AC11F2C761C00BAC364 /* YYSegmentCategoryViewController.m in Sources */,
 				8C573ACD1F2C7ED300BAC364 /* YYSegmentBaseViewController.m in Sources */,
 				8C573AD01F2C7FFE00BAC364 /* YYSegmentMessageViewController.m in Sources */,
-				8C573AC31F2C761C00BAC364 /* SegmentCategoryCell.m in Sources */,
 				8C573A541F2C392800BAC364 /* ViewController.m in Sources */,
-				8C573AC51F2C761C00BAC364 /* UIView+Indicator.m in Sources */,
 				8C573AD61F2C807000BAC364 /* YYSegmentGroupViewController.m in Sources */,
-				8C573AC61F2C761C00BAC364 /* YYBadgeView.m in Sources */,
 				8C573A511F2C392800BAC364 /* AppDelegate.m in Sources */,
 				8C573A4E1F2C392800BAC364 /* main.m in Sources */,
 				8C573AD31F2C803800BAC364 /* YYSegmentFriendsViewController.m in Sources */,
-				8C573AC21F2C761C00BAC364 /* SegmentCategoryBar.m in Sources */,
+				8C573AC21F2C761C00BAC364 /* YYSegmentCategoryBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

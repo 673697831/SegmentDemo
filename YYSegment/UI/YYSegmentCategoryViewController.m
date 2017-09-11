@@ -1,24 +1,24 @@
 //
-//  DWSegmentCategoryViewController.m
+//  YYSegmentCategoryViewController.m
 //  YYSegment
 //
 //  Created by ouzhirui on 2017/7/29.
 //  Copyright © 2017年 YY. All rights reserved.
 //
 
-#import "DWSegmentCategoryViewController.h"
-#import "SegmentCategoryView.h"
+#import "YYSegmentCategoryViewController.h"
+#import "YYSegmentCategoryView.h"
 #import "YYSegmentGroupViewController.h"
 #import "YYSegmentFriendsViewController.h"
 #import "YYSegmentMessageViewController.h"
 
-@interface DWSegmentCategoryViewController ()<SegmentCategoryDataSource, SegmentCategoryDelegate>
+@interface YYSegmentCategoryViewController ()<YYSegmentCategoryDataSource, YYSegmentCategoryDelegate>
 
-@property (nonatomic, strong) SegmentCategoryView *categoryView;
+@property (nonatomic, strong) YYSegmentCategoryView *categoryView;
 
 @end
 
-@implementation DWSegmentCategoryViewController
+@implementation YYSegmentCategoryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,16 +35,16 @@
 
 #pragma mark - SegmentCategoryDataSource & SegmentCategoryDelegate
 
-- (NSUInteger)numberOfSegmentInSegmentView:(SegmentCategoryView *)segmentView
+- (NSUInteger)numberOfSegmentInSegmentView:(YYSegmentCategoryView *)segmentView
 {
-    return [self.viewControllers count];
+    return self.viewControllers.count;
 }
 
-- (NSString *)segmentView:(SegmentCategoryView *)segmentView titleAtIndex:(NSUInteger)index
+- (NSString *)segmentView:(YYSegmentCategoryView *)segmentView titleAtIndex:(NSUInteger)index
 {
     NSString *title = nil;
     
-    if(index < [self.viewControllers count]) {
+    if(index < self.viewControllers.count) {
         YYSegmentBaseViewController *viewController = self.viewControllers[index];
         if ([viewController respondsToSelector:@selector(segmentTitle)]) {
             title = [viewController segmentTitle];
@@ -54,17 +54,17 @@
     return title;
 }
 
-- (UIViewController *)segmentView:(SegmentCategoryView *)segmentView contentViewControllerAtIndex:(NSUInteger)index
+- (UIViewController *)segmentView:(YYSegmentCategoryView *)segmentView contentViewControllerAtIndex:(NSUInteger)index
 {
     UIViewController *viewController = nil;
-    if (index < [self.viewControllers count]) {
+    if (index < self.viewControllers.count) {
         viewController = self.viewControllers[index];
     }
     
     return viewController;
 }
 
-- (void)segmentView:(SegmentCategoryView *)segmentView didSelectedAtIndex:(NSUInteger)index
+- (void)segmentView:(YYSegmentCategoryView *)segmentView didSelectedAtIndex:(NSUInteger)index
 {
 //    _selectedIndex = index;
 //    
@@ -76,10 +76,10 @@
 
 #pragma mark - getter & setter
 
-- (SegmentCategoryView *)categoryView
+- (YYSegmentCategoryView *)categoryView
 {
     if (!_categoryView) {
-        _categoryView = [SegmentCategoryView new];
+        _categoryView = [YYSegmentCategoryView new];
         _categoryView.dataSource = self;
         _categoryView.delegate = self;
     }

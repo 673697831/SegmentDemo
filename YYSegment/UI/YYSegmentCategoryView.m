@@ -6,12 +6,12 @@
 //  Copyright © 2017年 YY. All rights reserved.
 //
 
-#import "SegmentCategoryView.h"
-#import "SegmentCategoryBar.h"
+#import "YYSegmentCategoryView.h"
+#import "YYSegmentCategoryBar.h"
 
 static const CGFloat kCategoryBarHeight = 40;
 
-@interface SegmentCategoryView ()<SegmentCategoryBarDelegate, UIScrollViewDelegate>
+@interface YYSegmentCategoryView ()<YYSegmentCategoryBarDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL hasLoaded;
 @property (nonatomic, strong) NSMutableDictionary *contentViewDict;
@@ -26,7 +26,7 @@ static const CGFloat kCategoryBarHeight = 40;
 
 @end
 
-@implementation SegmentCategoryView
+@implementation YYSegmentCategoryView
 
 #pragma mark - public method
 
@@ -261,8 +261,7 @@ static const CGFloat kCategoryBarHeight = 40;
 
 - (void)initSubViews
 {
-    SegmentCategoryBar *categoryBar = [[SegmentCategoryBar alloc] initWithFrame:CGRectZero];
-//    categoryBar.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
+    YYSegmentCategoryBar *categoryBar = [[YYSegmentCategoryBar alloc] initWithFrame:CGRectZero];
     categoryBar.delegate = self;
     categoryBar.backgroundColor = [UIColor clearColor];
     [self addSubview:categoryBar];
@@ -275,8 +274,6 @@ static const CGFloat kCategoryBarHeight = 40;
     contentScrollView.showsHorizontalScrollIndicator = NO;
     contentScrollView.showsVerticalScrollIndicator = NO;
     contentScrollView.directionalLockEnabled = YES;
-//    contentScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight |
-//    UIViewAutoresizingFlexibleWidth;
     contentScrollView.scrollsToTop = NO;
     contentScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
     [self addSubview:contentScrollView];
@@ -341,9 +338,9 @@ static const CGFloat kCategoryBarHeight = 40;
 //}
 
 
-#pragma mark - SegmentCategoryBarDelegate
+#pragma mark - YYSegmentCategoryBarDelegate
 
-- (void)segmentCategoryBar:(SegmentCategoryBar *)categoryBar selectedIndexChanged:(NSInteger)index
+- (void)segmentCategoryBar:(YYSegmentCategoryBar *)categoryBar selectedIndexChanged:(NSInteger)index
 {
     self.isTriggerScrollFromCategoryBar = YES;
 //    [self triggerScrollToIndex:index];

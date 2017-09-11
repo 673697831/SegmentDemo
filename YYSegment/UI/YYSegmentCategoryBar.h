@@ -1,32 +1,35 @@
 //
-//  SegmentCategoryBar.h
-//  SegmentCategoryViewDemo
+//  YYSegmentCategoryView.h
+//  YYSegment
 //
-//  Created by zhenby on 6/30/14.
-//  Copyright (c) 2014 zhenby. All rights reserved.
+//  Created by ouzhirui on 2017/7/29.
+//  Copyright © 2017年 YY. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class SegmentCategoryBar;
+@class YYSegmentCategoryBar;
 
-@protocol SegmentCategoryBarDelegate <NSObject>
+@protocol YYSegmentCategoryBarDelegate <NSObject>
 
 @optional
-- (void)segmentCategoryBar:(SegmentCategoryBar *)categoryBar selectedIndexChanged:(NSInteger)index;
+- (void)segmentCategoryBar:(YYSegmentCategoryBar *)categoryBar selectedIndexChanged:(NSInteger)index;
 
 @end
 
 
-@interface SegmentCategoryBar : UIView
+@interface YYSegmentCategoryBar : UIView
 
 @property(assign, nonatomic) CGFloat categoryTitlePadding;
+@property(assign, nonatomic) CGFloat lineViewHeight;
+@property(assign, nonatomic) CGFloat lineViewWidth;
+
 @property(strong, nonatomic) NSArray *categoryTitleArray;
 @property(assign, nonatomic, readonly) NSInteger selectedIndex;
 @property(strong, nonatomic) UIColor *selectedColor;
 @property(strong, nonatomic) UIFont *buttonNormalTitleFont;
 @property(strong, nonatomic) UIFont *buttonSelectedTitleFont;
-@property(weak, nonatomic) id<SegmentCategoryBarDelegate> delegate;
+@property(weak, nonatomic) id<YYSegmentCategoryBarDelegate> delegate;
 
 @property(assign, nonatomic) BOOL isCenter;
 @property(nonatomic ,assign) BOOL forceUndraggable;

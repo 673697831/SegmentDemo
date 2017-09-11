@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "DWSegmentCategoryViewController.h"
+#import "YYSegmentCategoryViewController.h"
 #import <ReactiveCocoa.h>
 
 @interface ViewController ()
@@ -24,7 +24,7 @@
     @weakify(self);
     button.rac_command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
         @strongify(self);
-        [self.navigationController pushViewController:[DWSegmentCategoryViewController new] animated:YES];
+        [self.navigationController pushViewController:[YYSegmentCategoryViewController new] animated:YES];
         return [RACSignal empty];
     }];
     [button setTitleColor:[UIColor redColor]
