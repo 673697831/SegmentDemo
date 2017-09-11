@@ -624,7 +624,7 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
 - (CGRect)lineFrameWithLineX:(CGFloat)lineX lineWidth:(CGFloat)lineWidth
 {
     //6.0宽度固定为24*3,距离下边距5
-    CGFloat aLineX = lineX +(lineWidth - self.lineViewHeight)/2.0;
+    CGFloat aLineX = lineX +(lineWidth - self.lineViewWidth)/2.0;
     return CGRectMake(aLineX, self.frame.size.height - self.lineViewHeight - 5, self.lineViewWidth, self.lineViewHeight);
 }
     
