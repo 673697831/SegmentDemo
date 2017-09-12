@@ -11,32 +11,56 @@
 @class YYSegmentCategoryBar;
 @class YYSegmentCategoryView;
 
+/**
+ *  YYSegmentCategoryBar排版问题
+ */
+typedef NS_ENUM(NSUInteger, YYSegmentCategoryViewAlignment) {
+    /**
+     *  左对齐
+     */
+    kYYSegmentCategoryViewAlignmentLeft,
+    /**
+     *  居中
+     */
+    kYYSegmentCategoryViewAlignmentCenter,
+    /**
+     *  右对齐
+     */
+    kYYSegmentCategoryViewAlignmentRight,
+};
+
+
 @protocol YYSegmentCategoryDataSource <NSObject>
 
 @optional
+
+/**
+ *
+ *
+ *   YYSegmentCategoryBar 属性设置
+ *
+ *
+ */
+
 - (NSUInteger)numberOfSegmentInSegmentView:(YYSegmentCategoryView *)segmentView;
 
 - (NSString *)segmentView:(YYSegmentCategoryView *)segmentView titleAtIndex:(NSUInteger)index;
 - (NSAttributedString *)segmentView:(YYSegmentCategoryView *)segmentView
              attributedTitleAtIndex:(NSUInteger)index;
+- (UIView *)segmentView:(YYSegmentCategoryView *)segmentView titleViewAtIndex:(NSUInteger)index;
+- (CGFloat)segmentView:(YYSegmentCategoryView *)segmentView titleViewWidthAtIndex:(NSUInteger)index;
+
+/**
+ *
+ *
+ *   YYSegmentCategoryViewController
+ *
+ *
+ */
 
 - (UIView *)segmentView:(YYSegmentCategoryView *)segmentView contentViewAtIndex:(NSUInteger)index;
 - (UIViewController *)segmentView:(YYSegmentCategoryView *)segmentView
      contentViewControllerAtIndex:(NSUInteger)index;
-
-- (UIImage *)segmentView:(YYSegmentCategoryView *)segmentView imageIconAtIndex:(NSUInteger)index;
-- (UIImage *)segmentView:(YYSegmentCategoryView *)segmentView selectedImageIconAtIndex:(NSUInteger)index;
-
-- (CGFloat)topInsetForHeaderView:(YYSegmentCategoryView *)segmentView;
-- (CGFloat)currentOffsetForCategoryBar:(YYSegmentCategoryView *)segmentView;
-/**
- *  这四个回调只是为了解决首页下拉分类视图中二级分类需求，没有下拉分类视图的可忽略
- *
- */
-- (NSUInteger)numberOfSecondSegmentInSegmentView:(YYSegmentCategoryView *)segmentView;
-- (NSString *)segmentView:(YYSegmentCategoryView *)segmentView secondeSegmentTitleAtIndex:(NSUInteger)index;
-- (UIImage *)segmentView:(YYSegmentCategoryView *)segmentView secondSegmentImageIconAtIndex:(NSUInteger)index;
-- (UIImage *)segmentView:(YYSegmentCategoryView *)segmentView secondSegmentSelectedImageIconAtIndex:(NSUInteger)index;
 
 @end
 
@@ -46,20 +70,6 @@
 @optional
 - (void)segmentView:(YYSegmentCategoryView *)segmentView willSelectedAtIndex:(NSUInteger)index;
 - (void)segmentView:(YYSegmentCategoryView *)segmentView didSelectedAtIndex:(NSUInteger)index;
-/**
- *  为了统计而加的方法 ಥ_ಥ
- */
-- (void)segmentView:(YYSegmentCategoryView *)segmentView
- didSelectedAtIndex:(NSUInteger)index
-isFromMoreCollectionView:(BOOL)isFromMoreCollectionView;
-- (void)onMoreButtonTapInSegmentView:(YYSegmentCategoryView *)segmentView;
-- (void)segmentView:(YYSegmentCategoryView *)segmentView willSelectedAtIndex:(NSUInteger)index isTriggeredFromCategoryBar:(BOOL)isFromBar;
-
-/**
- *  这个回调只是为了解决首页下拉分类视图中二级分类点击的需求，没有下拉分类视图的可忽略
- *
- */
-- (void)segmentView:(YYSegmentCategoryView *)segmentView didSelectedSecondSegmentAtIndex:(NSUInteger)index;
 
 @end
 
@@ -70,6 +80,9 @@ isFromMoreCollectionView:(BOOL)isFromMoreCollectionView;
 @property (nonatomic, weak) id<YYSegmentCategoryDataSource> dataSource;
 @property (nonatomic, weak) id<YYSegmentCategoryDelegate> delegate;
 @property (nonatomic, assign) NSUInteger selectedIndex;
+
+@property (nonatomic, assign, readonly) CGFloat realContentWidth; //控件所占的真实宽度
+@property (assign, nonatomic) YYSegmentCategoryViewAlignment barAlignment;//对齐方向
 
 - (void)reloadData;
 

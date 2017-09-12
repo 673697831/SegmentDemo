@@ -16,13 +16,7 @@ static const CGFloat kCategoryBarHeight = 40;
 @property (nonatomic, assign) BOOL hasLoaded;
 @property (nonatomic, strong) NSMutableDictionary *contentViewDict;
 
-@property(assign, nonatomic) NSInteger selectedIndexInner;
 @property(assign, nonatomic) BOOL isTriggerScrollFromCategoryBar;
-@property(assign, nonatomic) BOOL isSendedWillChangeIndex;
-@property(assign, nonatomic) NSInteger triggerScrollToPage;
-@property(assign, nonatomic) CGFloat lastScrollContentOffset;
-@property(assign, nonatomic) NSInteger willScrollToPage;
-@property(assign, nonatomic) BOOL isFromMoreCollectionView;
 
 @end
 
@@ -47,16 +41,15 @@ static const CGFloat kCategoryBarHeight = 40;
         scrollToIndex = 0;
     }
     [self configContentViewAtIndex:scrollToIndex];
-//    [self willScrollToIndex:scrollToIndex];
-//    [self.segmentCategoryBar scrollToIndex:scrollToIndex];
-//    [self scrollToIndex:scrollToIndex];
-//    [self didScrollToIndex:scrollToIndex];
+    
+    [self resetConstraints];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
         _contentViewDict = [NSMutableDictionary new];
+        _barAlignment = kYYSegmentCategoryViewAlignmentCenter;
         [self initSubViews];
         [self initConstraints];
     }
@@ -70,10 +63,6 @@ static const CGFloat kCategoryBarHeight = 40;
 {
     self.contentScrollView.contentSize = CGSizeMake([self numberFirstSegment] * CGRectGetWidth(self.bounds),
                                                     0);
-//    for (NSNumber *indexNumber in self.contentViewDict.allKeys) {
-//        UIView *contentView = self.contentViewDict[indexNumber];
-//        [self configUIScrollView:contentView atIndex:[indexNumber integerValue]];
-//    }
 }
 
 
@@ -109,12 +98,6 @@ static const CGFloat kCategoryBarHeight = 40;
     if (contentView) {
         [self configUIScrollView:contentView atIndex:index];
         
-//        // 第一次加载时，需要正确设置 contentOffset，而以后都不需要重新设置，所以抽到这里写
-//        if ([contentView isKindOfClass:[UIScrollView class]]) {
-//            ((UIScrollView *)contentView).contentOffset = CGPointMake(0.0, -SegmentCategoryBarHeight - [self currentOffsetForCategoryBar]);
-//            ((UIScrollView *)contentView).scrollsToTop = NO;
-//        }
-        
         [self.contentScrollView addSubview:contentView];
         
         [self.contentViewDict setObject:contentView forKey:@(index)];
@@ -123,127 +106,11 @@ static const CGFloat kCategoryBarHeight = 40;
 
 - (void)configUIScrollView:(UIView *)contentView atIndex:(NSInteger)index
 {
-    if ([contentView isKindOfClass:[UIScrollView class]]) {
-//        UIScrollView *scrollView = (UIScrollView *)contentView;
-//        
-//        scrollView.contentInset = UIEdgeInsetsMake(SegmentCategoryBarHeight + [self topInsetForHeaderView], 0.0,
-//                                                   self.bottomContentInset, 0.0);
-//        
-//        scrollView.scrollIndicatorInsets = scrollView.contentInset;
-//        
-//        CGRect contentViewFrame = CGRectMake(index * CGRectGetWidth(self.contentScrollView.bounds),
-//                                             0.0,
-//                                             CGRectGetWidth(self.contentScrollView.bounds),
-//                                             CGRectGetHeight(self.contentScrollView.bounds));
-//        scrollView.frame = contentViewFrame;
-//        
-//        // 为了防止上拉刷新、下拉加载更多时把 contentInset 覆盖，所以需要通知上拉、下拉 contentInset 的变化
-//        
-//        
-//        NSString *title = nil;
-//        if (index < self.categoryBar.categoryTitleArray.count) {
-//            title = [self.categoryBar.categoryTitleArray objectAtIndex:index];
-//        }
-//        
-//        if (scrollView.infiniteScrollingView && ![title isEqualToString:@"动态"]) {
-//            [scrollView changeInfiniteScrollingViewOriginalContentInset:scrollView.contentInset];
-//        }
-//        
-//        if (scrollView.pullRefreshingHeader) {
-//            [scrollView changePullRefreshingViewOriginalContentInset:scrollView.contentInset];
-//        }
-    } else {
-        CGRect contentViewFrame = CGRectMake(index * CGRectGetWidth(self.bounds), 0,
-                                             CGRectGetWidth(self.contentScrollView.bounds),
-                                             CGRectGetHeight(self.contentScrollView.bounds));
-        contentView.frame = contentViewFrame;
-    }
-    
+    CGRect contentViewFrame = CGRectMake(index * CGRectGetWidth(self.bounds), 0,
+                                         CGRectGetWidth(self.contentScrollView.bounds),
+                                         CGRectGetHeight(self.contentScrollView.bounds));
+    contentView.frame = contentViewFrame;
 }
-
-
-//- (void)willScrollToIndex:(NSUInteger)index
-//{
-//    [self configContentViewAtIndex:index];
-//    
-//    if ([self.dataSource respondsToSelector:@selector(segmentView:contentViewControllerAtIndex:)]) {
-//        if ( self.selectedIndexInner != NSUIntegerMax ) {
-//            UIViewController *oldViewController = [self.dataSource segmentView:self
-//                                                  contentViewControllerAtIndex:self.selectedIndexInner];
-//            [oldViewController viewWillDisappear:YES];
-//        }
-//        
-//        UIViewController *newViewController = [self.dataSource segmentView:self
-//                                              contentViewControllerAtIndex:index];
-//        [newViewController viewWillAppear:YES];
-//    }
-//    
-//    if ([self.delegate respondsToSelector:@selector(segmentView:willSelectedAtIndex:)]) {
-//        [self.delegate segmentView:self willSelectedAtIndex:index];
-//    }
-//    else if ( [self.delegate respondsToSelector:@selector(segmentView:willSelectedAtIndex:isTriggeredFromCategoryBar:)] )
-//    {
-//        [self.delegate segmentView:self willSelectedAtIndex:index isTriggeredFromCategoryBar:_isTriggerScrollFromCategoryBar];
-//    }
-//}
-//
-//- (void)scrollToIndex:(NSUInteger)index
-//{
-//    CGRect contentFrame = CGRectMake(index * CGRectGetWidth(self.bounds), 0.0,
-//                                     CGRectGetWidth(self.bounds),
-//                                     CGRectGetHeight(self.contentScrollView.bounds));
-//    
-//    [self.contentScrollView scrollRectToVisible:contentFrame animated:YES];
-//}
-
-//- (void)didScrollToIndex:(NSUInteger)index
-//{
-//    
-//    if (self.selectedIndexInner != index) {
-//        self.selectedIndex = index;
-//        
-//        UIView *oldView = nil;
-//        UIView *newView = nil;
-//        if ([self.dataSource respondsToSelector:@selector(segmentView:contentViewControllerAtIndex:)]) {
-//            if (NSUIntegerMax != self.selectedIndexInner) {
-//                UIViewController *oldViewController = [self.dataSource segmentView:self
-//                                                      contentViewControllerAtIndex:self.selectedIndexInner];
-//                [oldViewController viewDidDisappear:YES];
-//                oldView = oldViewController.view;
-//            }
-//            
-//            UIViewController *newViewController = [self.dataSource segmentView:self
-//                                                  contentViewControllerAtIndex:index];
-//            [newViewController viewDidAppear:YES];
-//            newView = newViewController.view;
-//        } else {
-//            oldView = [self contentViewAtIndex:self.selectedIndexInner];
-//            newView = [self contentViewAtIndex:index];
-//        }
-//        
-//        if ([oldView isKindOfClass:[UIScrollView class]]) {
-//            ((UIScrollView *)oldView).scrollsToTop = NO;
-//        }
-//        if ([newView isKindOfClass:[UIScrollView class]]) {
-//            ((UIScrollView *)newView).scrollsToTop = YES;
-//        }
-//        
-//        if ([self.delegate respondsToSelector:@selector(segmentView:didSelectedAtIndex:isFromMoreCollectionView:)]) {
-//            [self.delegate segmentView:self
-//                    didSelectedAtIndex:index
-//              isFromMoreCollectionView:self.isFromMoreCollectionView];
-//            
-//            self.isFromMoreCollectionView = NO;
-//        } else if ([self.delegate respondsToSelector:@selector(segmentView:didSelectedAtIndex:)]) {
-//            [self.delegate segmentView:self didSelectedAtIndex:index];
-//        }
-//        
-//        self.selectedIndexInner = index;
-//    }
-//    
-//    [self resetTriggerScrollToIndex];
-//     
-//}
 
 - (void)initConstraints{
     
@@ -257,6 +124,53 @@ static const CGFloat kCategoryBarHeight = 40;
         make.left.bottom.right.equalTo(self);
     }];
     
+}
+
+- (void)resetConstraints
+{
+    switch (self.barAlignment) {
+        case kYYSegmentCategoryViewAlignmentLeft:
+        {
+            CGFloat width = self.segmentCategoryBar.preferredContentSize.width;
+            [_segmentCategoryBar mas_remakeConstraints:^(MASConstraintMaker *make) {
+                if (width > [UIScreen mainScreen].bounds.size.width) {
+                    make.width.equalTo(self);
+                }else
+                {
+                    make.width.equalTo(@(width));
+                }
+                make.left.top.equalTo(self);
+                make.height.equalTo(@(kCategoryBarHeight));
+            }];
+            break;
+        }
+        case kYYSegmentCategoryViewAlignmentRight:
+        {
+            CGFloat width = self.segmentCategoryBar.preferredContentSize.width;
+            [_segmentCategoryBar mas_remakeConstraints:^(MASConstraintMaker *make) {
+                if (width > [UIScreen mainScreen].bounds.size.width) {
+                    make.width.equalTo(self);
+                }else
+                {
+                    make.width.equalTo(@(width));
+                }
+                make.right.top.equalTo(self);
+                make.width.equalTo(@(width));
+                make.height.equalTo(@(kCategoryBarHeight));
+            }];
+            break;
+        }
+        case kYYSegmentCategoryViewAlignmentCenter:
+        {
+            [_segmentCategoryBar mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.centerX.equalTo(self);
+                make.height.equalTo(@(kCategoryBarHeight));
+            }];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)initSubViews
@@ -321,45 +235,17 @@ static const CGFloat kCategoryBarHeight = 40;
     }
 }
 
-//- (void)triggerScrollToIndex:(NSUInteger)index
-//{
-//    self.triggerScrollToPage = index;
-//    [self scrollToIndex:index];
-//}
-//
-//- (void)resetTriggerScrollToIndex
-//{
-//    self.triggerScrollToPage = -1;
-//}
-//
-//- (BOOL)isThereTriggerScrollToIndex
-//{
-//    return (self.triggerScrollToPage >= 0);
-//}
-
-
 #pragma mark - YYSegmentCategoryBarDelegate
 
 - (void)segmentCategoryBar:(YYSegmentCategoryBar *)categoryBar selectedIndexChanged:(NSInteger)index
 {
     self.isTriggerScrollFromCategoryBar = YES;
-//    [self triggerScrollToIndex:index];
     self.selectedIndex = index;
     [self.contentScrollView setContentOffset:CGPointMake(index * self.bounds.size.width, 0) animated:NO];
     [self.segmentCategoryBar scrollToIndex:index];
 }
 
 #pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    self.isTriggerScrollFromCategoryBar = NO;
-    if (scrollView == self.contentScrollView) {
-//        [self scrollViewContentOffsetChangeWithOffsetX:targetContentOffset -> x];
-//        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-//        [self.segmentCategoryBar scrollToIndex:index];
-    }
-}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -371,11 +257,6 @@ static const CGFloat kCategoryBarHeight = 40;
     }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGPoint pt = self.contentScrollView.contentOffset;
@@ -385,12 +266,8 @@ static const CGFloat kCategoryBarHeight = 40;
     [[self segmentTitleArray] count] : scrollToPage;
     
     if (!self.isTriggerScrollFromCategoryBar) {
-        NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-//        [self.segmentCategoryBar selectToIndex:index];
         [self.segmentCategoryBar setLineOffsetWithPage:scrollToPage ratio:radio];
-        [self.segmentCategoryBar changeButtonFontWithOffset:scrollView.contentOffset.x];
-        NSLog(@"scrollViewDidScroll %f", radio);
-//        [self.segmentCategoryBar scrollToIndex:index];
+        [self.segmentCategoryBar changeButtonFontWithOffset:scrollView.contentOffset.x width:[UIScreen mainScreen].bounds.size.width];
     }
     
     [self scrollViewContentOffsetChangeWithOffsetX:scrollView.contentOffset.x];
@@ -405,66 +282,5 @@ static const CGFloat kCategoryBarHeight = 40;
         [self configContentViewAtIndex:index];
     }
 }
-
-//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-//{
-//    self.isSendedWillChangeIndex = NO;
-//    self.isTriggerScrollFromCategoryBar = NO;
-//    NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-//    [self.segmentCategoryBar scrollToIndex:index];
-//    [self didScrollToIndex:index];
-//}
-//
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-//{
-//    self.isSendedWillChangeIndex = NO;
-//    self.isTriggerScrollFromCategoryBar = NO;
-//    NSInteger index = self.contentScrollView.contentOffset.x / self.frame.size.width;
-//    [self.segmentCategoryBar scrollToIndex:index];
-//    [self didScrollToIndex:index];
-//}
-//
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    CGPoint pt = self.contentScrollView.contentOffset;
-//    NSInteger scrollToPage = pt.x / CGRectGetWidth(self.bounds);
-//    scrollToPage = (scrollToPage >= [[self segmentTitleArray] count]) ?
-//    [[self segmentTitleArray] count] : scrollToPage;
-//    if (!self.isTriggerScrollFromCategoryBar) {
-//        CGFloat radio = (((NSInteger)pt.x) % (NSInteger)CGRectGetWidth(self.bounds) / CGRectGetWidth(self.bounds));
-//        [self.segmentCategoryBar setLineOffsetWithPage:scrollToPage ratio:radio];
-//    }
-//    
-//    if (![self isThereTriggerScrollToIndex]) {
-//        if (self.lastScrollContentOffset > scrollView.contentOffset.x) {
-//            scrollToPage = self.selectedIndex - 1;
-//        } else if (self.lastScrollContentOffset < scrollView.contentOffset.x) {
-//            scrollToPage = self.selectedIndex + 1;
-//        }
-//        
-//        if (scrollToPage != self.willScrollToPage) {
-//            self.willScrollToPage = scrollToPage;
-//            self.isSendedWillChangeIndex = NO;
-//        }
-//    } else {
-//        self.willScrollToPage = self.triggerScrollToPage;
-//    }
-//    
-//    if (self.willScrollToPage < 0) {
-//        self.willScrollToPage = 0;
-//    }
-//    
-//    if (self.willScrollToPage >= [[self segmentTitleArray] count]) {
-//        self.willScrollToPage = [[self segmentTitleArray] count] - 1;
-//    }
-//    
-//    if (!self.isSendedWillChangeIndex) {
-//        [self willScrollToIndex:self.willScrollToPage];
-//        self.isSendedWillChangeIndex = YES;
-//    }
-//    
-//    self.lastScrollContentOffset = scrollView.contentOffset.x;
-//}
-
 
 @end

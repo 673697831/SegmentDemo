@@ -68,7 +68,7 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     [self resizeSubview];
     [self updateLineFrameDependOnSelectedIndex];
 }
-    
+
 #pragma mark - Util Methods
     
 - (void)updateSubview
@@ -88,7 +88,7 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     
     [self.buttonArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    NSInteger buttonCount = [self.categoryTitleArray count];
+    NSInteger buttonCount = self.categoryTitleArray.count;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < buttonCount; i++) {
         UIButton *button = [UIButton new];
@@ -149,10 +149,6 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     
 - (void)resizeSubview
 {
-    if (_useNewLayoutStrategy) {
-        [self layoutWithNewStrategy];
-        return ;
-    }
     self.scrollView.frame = self.bounds;
     
     NSInteger buttonCount = self.buttonArray.count;
@@ -165,7 +161,7 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
         } else if ([titleObject isKindOfClass:[NSString class]]) {
             sizeTitle = [self sizeWithButtonTitle:(NSString *)titleObject];
         }
-        contentWidth = contentWidth + floor(sizeTitle.width) + self.categoryTitlePadding;
+        contentWidth = contentWidth + sizeTitle.width + self.categoryTitlePadding;
     }
     
     BOOL isOverBound = (contentWidth > CGRectGetWidth(self.bounds));
@@ -220,62 +216,6 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     self.lineView.clipsToBounds = YES;
     self.lineView.layer.cornerRadius = self.lineView.frame.size.height/2;
 }
-    
-- (void)layoutWithNewStrategy{
-    self.scrollView.frame = self.bounds;
-    
-    NSInteger buttonCount = [self.buttonArray count];
-    _extraClickWidth = MAX(0,MIN(_extraClickWidth, _titlePadding/2));
-    CGFloat xPos = _leadingSpace - _extraClickWidth / 2;
-    
-    CGFloat contentWidth = _leadingSpace;
-    
-    for (NSInteger i = 0; i < buttonCount; i++) {
-        NSObject *titleObject = self.categoryTitleArray[i];
-        CGSize titleSize = CGSizeZero;
-        if ([titleObject isKindOfClass:[NSAttributedString class]]) {
-            titleSize = [self sizeWithButtonAttributedTitle:(NSAttributedString *)titleObject];
-        } else if ([titleObject isKindOfClass:[NSString class]]) {
-            titleSize = [self sizeWithButtonTitle:(NSString *)titleObject];
-        }
-        contentWidth = contentWidth + floor(titleSize.width) + _titlePadding; // 不需要管 extraClickWidth， 因为不影响实际的contentWidth
-        
-        //layout buttons
-        UIButton *button = self.buttonArray[i];
-        button.frame = CGRectMake(xPos, 0, titleSize.width + _extraClickWidth, self.bounds.size.height);
-        
-        xPos += button.frame.size.width + _titlePadding - _extraClickWidth;
-    }
-    contentWidth -= _titlePadding; //末尾会多算一个padding
-    
-    self.scrollView.contentSize = CGSizeMake(contentWidth, self.bounds.size.height);
-    if (_placeAtCenter && contentWidth < self.scrollView.bounds.size.width) {
-        //算上leadingSpace，contentSize依然小，则忽略leading，走居中逻辑。
-        CGFloat offset = (self.scrollView.bounds.size.width - contentWidth) / 2;
-        for (NSInteger i = 0; i < buttonCount; i++) {
-            //layout buttons
-            UIButton *button = self.buttonArray[i];
-            button.frame = CGRectMake(button.frame.origin.x - _leadingSpace + offset, 0, button.frame.size.width, self.bounds.size.height);
-            
-            //本来是想设contentInset的，但是设了不知道搞毛系统会各种自动设我的contentOffset，所以只能改buttonFrame了。
-        }
-        contentWidth -= _leadingSpace;
-        
-        self.scrollView.contentSize = CGSizeMake(contentWidth, self.bounds.size.height);
-    }
-    
-    
-    self.lineView.frame = [self lineFrameWithButtonIndex:self.selectedIndex];
-    self.lineView.clipsToBounds = YES;
-    self.lineView.layer.cornerRadius = self.lineView.frame.size.height/2;
-}
-    
-- (void)setTitlePadding:(CGFloat)titlePadding{
-    if (_titlePadding != titlePadding) {
-        _titlePadding = titlePadding;
-    }
-    [self updateSubview];
-}
 
 - (void)resetButtonStatus
 {
@@ -297,8 +237,6 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     
 - (void)setButton:(UIButton *)button selected:(BOOL)selected
 {
-    //    button.titleLabel.font = selected ? DefaultSelectedTitleFont : ButtonNormalTitleFont;
-    //    button.selected = selected;
     if(selected){
         button.titleLabel.font = self.buttonSelectedTitleFont ? : DefaultSelectedTitleFont;
     }else{
@@ -306,37 +244,6 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     }
     
     button.selected = selected;
-}
-    
-- (void)showIndicator:(BOOL)showIndicator atIndex:(NSInteger)index
-{
-
-}
-    
-- (BOOL)isShowIndicateorAtIndex:(NSInteger)index
-{
-    BOOL showIndicator = NO;
-    return showIndicator;
-}
-    
-- (void)showBadge:(NSString *)badge atIndex:(NSInteger)index
-{
-
-}
-    
-- (void) showNewBadge:(NSString *)badge atIndex:(NSInteger)index
-{
-}
-    
-- (NSString *)badgeStringAtIndex:(NSInteger)index
-{
-    NSString *badge = nil;
-    
-    return badge;
-}
-    
-- (void)hideBadgeAtIndex:(NSInteger)index
-{
 }
     
 - (void)updateTitle:(NSString *)title atIndex:(NSInteger)index
@@ -423,7 +330,24 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
 }
     
 #pragma mark - Public Method
-    
+
+- (CGSize)preferredContentSize
+{
+    NSInteger buttonCount = self.categoryTitleArray.count;
+    CGFloat contentWidth = self.categoryTitlePadding;
+    for (NSInteger i = 0; i < buttonCount; i++) {
+        NSObject *titleObject = self.categoryTitleArray[i];
+        CGSize sizeTitle = CGSizeZero;
+        if ([titleObject isKindOfClass:[NSAttributedString class]]) {
+            sizeTitle = [self sizeWithButtonAttributedTitle:(NSAttributedString *)titleObject];
+        } else if ([titleObject isKindOfClass:[NSString class]]) {
+            sizeTitle = [self sizeWithButtonTitle:(NSString *)titleObject];
+        }
+        contentWidth = contentWidth + sizeTitle.width + self.categoryTitlePadding;
+    }
+    return CGSizeMake(contentWidth, 40);
+}
+
 - (void)setLineOffsetWithPage:(NSInteger)page ratio:(CGFloat)ratio
 {
     UIButton *currentButton = (UIButton *)[self viewWithTag:(page + kButtonStartTag)];
@@ -534,10 +458,9 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
     }
 }
 
-- (void)changeButtonFontWithOffset:(CGFloat)offset
+- (void)changeButtonFontWithOffset:(CGFloat)offset width:(CGFloat)width
 {
     [self resetButtonStatus];
-    CGFloat width = self.bounds.size.width;
     CGFloat p = fmod(offset, width) /width;
     NSInteger index = offset / width;
     UIButton *firstButton = self.buttonArray[index];
@@ -579,6 +502,25 @@ static const CGFloat kDefaultLineViewWidth                  =   25.0;
         self.selectedIndex = index;
         [self setSelectedButtonSelected:YES];
     }
+}
+
+- (CGFloat)realContentWidth
+{
+    CGFloat width = self.categoryTitlePadding;
+    
+    for (NSInteger index = 0; index < self.buttonArray.count; index++) {
+        UIButton *button = self.buttonArray[index];
+        CGSize size = CGSizeZero;
+        if (button.currentAttributedTitle) {
+            size = [self sizeWithButtonAttributedTitle:button.currentAttributedTitle];
+        } else {
+            size = [self sizeWithButtonTitle:button.currentTitle];
+        }
+        
+        width = width + size.width + self.categoryTitlePadding;
+    }
+
+    return width;
 }
 
 #pragma mark - Getter

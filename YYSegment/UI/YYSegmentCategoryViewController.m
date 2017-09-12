@@ -73,7 +73,6 @@
 //    }
 }
 
-
 #pragma mark - getter & setter
 
 - (YYSegmentCategoryView *)categoryView
@@ -82,6 +81,7 @@
         _categoryView = [YYSegmentCategoryView new];
         _categoryView.dataSource = self;
         _categoryView.delegate = self;
+        _categoryView.barAlignment = kYYSegmentCategoryViewAlignmentLeft;
     }
     
     return _categoryView;
